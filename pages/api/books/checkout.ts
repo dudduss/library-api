@@ -1,10 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { Book } from "../../../types";
-import { supabase } from "../../../supabase";
+import { Book } from "../../../lib/types";
+import { supabase } from "../../../lib/supabase";
 import {
   MAX_BOOKS_CHECKED_OUT,
   CHECKOUT_PERIOD_DAYS,
-} from "../../../constants";
+} from "../../../lib/constants";
 
 type CheckoutBookRequest = {
   userId: number;

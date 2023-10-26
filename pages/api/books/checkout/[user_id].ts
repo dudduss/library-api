@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { Book } from "../../../../types";
-import { supabase } from "../../../../supabase";
+import { Book } from "../../../../lib/types";
+import { supabase } from "../../../../lib/supabase";
 
 type GetCheckedOutBooksResponse = {
   data?: Book[];

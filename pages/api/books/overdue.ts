@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { Book } from "../../../types";
-import { supabase } from "../../../supabase";
-import { CHECKOUT_PERIOD_DAYS } from "../../../constants";
+import { Book } from "../../../lib/types";
+import { supabase } from "../../../lib/supabase";
+import { CHECKOUT_PERIOD_DAYS } from "../../../lib/constants";
 
 type OverdueBooksResponse = {
   data?: Book[];
