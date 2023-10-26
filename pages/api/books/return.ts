@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { Book } from "../../../lib/types";
 import { supabase } from "../../../lib/supabase";
+import { isUserUser } from "@/lib/auth";
 
 type ReturnBookRequest = {
   userId: number;
@@ -19,6 +20,12 @@ export default async function handler(
   if (req.method === "POST") {
     // TODO: Authenticate request by checking req.headers.userId is a USER and don't need to pass in userId in body
     const { userId, bookId } = req.body as ReturnBookRequest;
+
+    const isUser = await isUserUser(Number(userId));
+    if (!isUser) {
+      res.status(401).end();
+      return;
+    }
 
     try {
       const { data, error } = await supabase

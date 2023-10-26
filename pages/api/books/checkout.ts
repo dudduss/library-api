@@ -5,6 +5,7 @@ import {
   MAX_BOOKS_CHECKED_OUT,
   CHECKOUT_PERIOD_DAYS,
 } from "../../../lib/constants";
+import { isUserUser } from "@/lib/auth";
 
 type CheckoutBookRequest = {
   userId: number;
@@ -23,6 +24,12 @@ export default async function handler(
   if (req.method === "POST") {
     // TODO: Authenticate request by checking req.headers.userId is a USER and don't need to pass in userId in body
     const { userId, isbn } = req.body as CheckoutBookRequest;
+
+    const isUser = await isUserUser(Number(userId));
+    if (!isUser) {
+      res.status(401).end();
+      return;
+    }
 
     try {
       // Check that a copy of the book is available

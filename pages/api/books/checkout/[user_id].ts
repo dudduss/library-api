@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { Book } from "../../../../lib/types";
 import { supabase } from "../../../../lib/supabase";
+import { isUserUser } from "@/lib/auth";
 
 type GetCheckedOutBooksResponse = {
   data?: Book[];
@@ -13,8 +14,12 @@ export default async function handler(
 ) {
   if (req.method === "GET") {
     // TODO: Use req.headers.userId to determine the user making the request instead of using URL params.
-    // Only allow requests from role type USER, not LIBRARIAN
     const { user_id } = req.query;
+    const isUser = await isUserUser(Number(user_id));
+    if (!isUser) {
+      res.status(401).end();
+      return;
+    }
 
     const { data, error } = await supabase
       .from("book")
