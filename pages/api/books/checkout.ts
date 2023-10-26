@@ -8,7 +8,6 @@ import {
 import { isUserUser } from "@/lib/auth";
 
 type CheckoutBookRequest = {
-  userId: number;
   isbn: string;
 };
 

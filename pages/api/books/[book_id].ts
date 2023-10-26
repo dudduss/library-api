@@ -33,6 +33,9 @@ export default async function handler(
         .eq("id", book_id)
         .limit(1);
 
+      if (error) {
+        throw new Error(error.message);
+      }
       if (!data || data.length === 0) {
         throw new Error("Book not found");
       }

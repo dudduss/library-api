@@ -29,7 +29,7 @@ export default async function handler(
     const dateToCompare = new Date(
       currentDate.getTime() - CHECKOUT_PERIOD_DAYS * 24 * 60 * 60 * 1000
     );
-    // convert Date to yyyy-mm-dd for Supabase
+    // convert Date to yyyy-mm-dd format for Supabase
     const dateToCompareString = dateToCompare.toISOString().split("T")[0];
 
     const { data, error } = await supabase

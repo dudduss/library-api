@@ -4,7 +4,6 @@ import { supabase } from "../../../lib/supabase";
 import { isUserUser } from "@/lib/auth";
 
 type ReturnBookRequest = {
-  userId: number;
   bookId: number;
 };
 
