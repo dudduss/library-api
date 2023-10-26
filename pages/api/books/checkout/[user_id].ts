@@ -9,7 +9,7 @@ type GetCheckedOutBooksResponse = {
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse<GetCheckedOutBooksResponse>
 ) {
   if (req.method === "GET") {
     // TODO: Use req.headers.userId to determine the user making the request instead of using URL params.
