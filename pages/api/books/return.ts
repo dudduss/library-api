@@ -17,15 +17,15 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  if (req.method === "POST") {
-    // TODO: Authenticate request by checking req.headers.userId is a USER and don't need to pass in userId in body
-    const { userId, bookId } = req.body as ReturnBookRequest;
+  const userId = Number(req.headers.user_id);
+  const isUser = await isUserUser(userId);
+  if (!isUser) {
+    res.status(401).end();
+    return;
+  }
 
-    const isUser = await isUserUser(Number(userId));
-    if (!isUser) {
-      res.status(401).end();
-      return;
-    }
+  if (req.method === "POST") {
+    const { bookId } = req.body as ReturnBookRequest;
 
     try {
       const { data, error } = await supabase

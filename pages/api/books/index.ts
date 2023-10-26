@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { Book } from "../../../lib/types";
 import { supabase } from "../../../lib/supabase";
+import { isUserAdmin } from "@/lib/auth";
 
 type CreateBookRequest = {
   isbn: string;
@@ -17,8 +18,14 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  const userId = req.headers.user_id;
+  const isAdmin = await isUserAdmin(Number(userId));
+  if (!isAdmin) {
+    res.status(401).end();
+    return;
+  }
+
   if (req.method === "POST") {
-    // TODO: Authenticate request by checking req.headers.userId is a LIBRARIAN
     const book = req.body as CreateBookRequest;
 
     try {

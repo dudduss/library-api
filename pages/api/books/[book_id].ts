@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { Book } from "../../../lib/types";
 import { supabase } from "../../../lib/supabase";
+import { isUserAdmin } from "@/lib/auth";
 
 type DeleteBookResponse = {
   data?: Book[];
@@ -11,8 +12,14 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<DeleteBookResponse>
 ) {
+  const userId = req.headers.user_id;
+  const isAdmin = await isUserAdmin(Number(userId));
+  if (!isAdmin) {
+    res.status(401).end();
+    return;
+  }
+
   if (req.method === "DELETE") {
-    // TODO: Authenticate request by checking req.headers.userId is a LIBRARIAN
     const { book_id } = req.query;
 
     try {

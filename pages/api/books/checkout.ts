@@ -17,13 +17,38 @@ type CheckoutBookResponse = {
   error?: any;
 };
 
+type GetCheckedOutBooksResponse = {
+  data?: Book[];
+  error?: any;
+};
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  if (req.method === "POST") {
-    // TODO: Authenticate request by checking req.headers.userId is a USER and don't need to pass in userId in body
-    const { userId, isbn } = req.body as CheckoutBookRequest;
+  // Authentication
+  const userId = req.headers.user_id;
+  const isUser = await isUserUser(Number(userId));
+  if (!isUser) {
+    res.status(401).end();
+    return;
+  }
+
+  if (req.method === "GET") {
+    const { data, error } = await supabase
+      .from("book")
+      .select()
+      .eq("checked_out_by", userId);
+
+    if (error) {
+      const response: GetCheckedOutBooksResponse = { error };
+      res.status(500).json(response);
+    } else {
+      const response: GetCheckedOutBooksResponse = { data };
+      res.status(200).json(response);
+    }
+  } else if (req.method === "POST") {
+    const { isbn } = req.body as CheckoutBookRequest;
 
     const isUser = await isUserUser(Number(userId));
     if (!isUser) {

@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { Book } from "../../../lib/types";
 import { supabase } from "../../../lib/supabase";
 import { CHECKOUT_PERIOD_DAYS } from "../../../lib/constants";
+import { isUserAdmin } from "@/lib/auth";
 
 type OverdueBooksResponse = {
   data?: Book[];
@@ -12,7 +13,12 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  // TODO: Authenticate request by checking req.headers.userId is a LIBRARIAN
+  const userId = req.headers.user_id;
+  const isAdmin = await isUserAdmin(Number(userId));
+  if (!isAdmin) {
+    res.status(401).end();
+    return;
+  }
 
   if (req.method === "GET") {
     const currentDate = new Date();
