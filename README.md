@@ -13,3 +13,5 @@ pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+Here's a [demo of the API](https://www.loom.com/share/ce74ad0088614e568505ade0a0f2bd89)https://www.loom.com/share/ce74ad0088614e568505ade0a0f2bd89) to see how it works in action!
