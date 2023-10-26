@@ -19,6 +19,10 @@ export default async function handler(
     return;
   }
 
+  /**
+   * DELETE /api/books/{book_id}
+   * Delete a book
+   */
   if (req.method === "DELETE") {
     const { book_id } = req.query;
 
@@ -33,7 +37,7 @@ export default async function handler(
         throw new Error("Book not found");
       }
 
-      // Check if book is checked out
+      // Check if book is checked out before deleting
       if (data[0].checked_out_by) {
         throw new Error("Book is checked out");
       } else {

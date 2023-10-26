@@ -24,6 +24,10 @@ export default async function handler(
     return;
   }
 
+  /**
+   * POST /api/books/return
+   * Returns a book for the user
+   */
   if (req.method === "POST") {
     const { bookId } = req.body as ReturnBookRequest;
 

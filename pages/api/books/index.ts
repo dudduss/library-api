@@ -25,6 +25,10 @@ export default async function handler(
     return;
   }
 
+  /**
+   * POST /api/books
+   * Adds a new book to the library
+   */
   if (req.method === "POST") {
     const book = req.body as CreateBookRequest;
 

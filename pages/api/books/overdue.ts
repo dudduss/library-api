@@ -20,6 +20,10 @@ export default async function handler(
     return;
   }
 
+  /**
+   * Get /api/books/overdue
+   * Get all books that are overdue
+   */
   if (req.method === "GET") {
     const currentDate = new Date();
     const dateToCompare = new Date(

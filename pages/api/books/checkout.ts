@@ -34,6 +34,10 @@ export default async function handler(
     return;
   }
 
+  /**
+   * GET /api/books/checkout
+   * Returns all books checked out by the user
+   */
   if (req.method === "GET") {
     const { data, error } = await supabase
       .from("book")
@@ -48,13 +52,11 @@ export default async function handler(
       res.status(200).json(response);
     }
   } else if (req.method === "POST") {
+    /**
+     * POST /api/books/checkout
+     * Checks out a book for the user
+     */
     const { isbn } = req.body as CheckoutBookRequest;
-
-    const isUser = await isUserUser(Number(userId));
-    if (!isUser) {
-      res.status(401).end();
-      return;
-    }
 
     try {
       // Check that a copy of the book is available
@@ -86,6 +88,12 @@ export default async function handler(
 
       if (userBooks.length >= MAX_BOOKS_CHECKED_OUT) {
         throw new Error("User has too many books checked out");
+      }
+
+      // Check that the user doesn't already have a copy of that book
+      const userHasBook = userBooks.some((book) => book.isbn === isbn);
+      if (userHasBook) {
+        throw new Error("User already has a copy of this book checked out");
       }
 
       // Check if any of the checked out books are overdue
